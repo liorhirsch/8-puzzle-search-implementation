@@ -1,5 +1,7 @@
-class Puzzle:
-    goal_state=[1,2,3,8,0,4,7,6,5]
+class Puzzle8:
+    goal_state=[1,2,3,
+                8,0,4,
+                7,6,5]
     heuristic=None
     evaluation_function=None
     needs_hueristic=False
@@ -16,7 +18,7 @@ class Puzzle:
             self.needs_hueristic=True
             self.generate_heuristic()
             self.evaluation_function=self.heuristic+self.path_cost
-        Puzzle.num_of_instances+=1
+        Puzzle8.num_of_instances+=1
 
     def __str__(self):
         return str(self.state[0:3])+'\n'+str(self.state[3:6])+'\n'+str(self.state[6:9])
@@ -64,7 +66,7 @@ class Puzzle:
                 new_state[x], new_state[x-1] = new_state[x-1], new_state[x]
             elif action is 'R':
                 new_state[x], new_state[x+1] = new_state[x+1], new_state[x]
-            children.append(Puzzle(new_state,self,action,1,self.needs_hueristic))
+            children.append(Puzzle8(new_state, self, action, 1, self.needs_hueristic))
         return children
 
     def find_solution(self):

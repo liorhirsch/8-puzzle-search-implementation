@@ -1,7 +1,7 @@
 import timeit
 from datetime import datetime
 from queue import Queue
-from puzzle import Puzzle
+from puzzle_8 import Puzzle8
 import time
 import numpy as np
 
@@ -9,7 +9,7 @@ import numpy as np
 
 
 def breadth_first_search(initial_state, thread_number=1):
-    start_node = Puzzle(initial_state, None, None, 0)
+    start_node = initial_state
     if start_node.goal_test():
         return start_node.find_solution()
     q = Queue()

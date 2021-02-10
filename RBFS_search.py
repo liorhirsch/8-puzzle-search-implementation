@@ -1,9 +1,9 @@
-from puzzle import Puzzle
+from puzzle_8 import Puzzle8
 from sys import maxsize
 
 
 def recursive_best_first_search(initial_state):
-    node=RBFS_search(Puzzle(state=initial_state, parent=None, action=None, path_cost=0, needs_hueristic=True), f_limit=maxsize)
+    node=RBFS_search(Puzzle8(state=initial_state, parent=None, action=None, path_cost=0, needs_hueristic=True), f_limit=maxsize)
     node=node[0]
     return node.find_solution()
 
