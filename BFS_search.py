@@ -19,12 +19,13 @@ def breadth_first_search(initial_state, thread_number=1):
     explored = []
     i = 0
     total_steps = 0
+    # total_time = np.float64(0)
     total_time = np.float64(0)
     threads_list_times = []
 
 
     while not (q.empty()):
-        t0 = time.clock()
+        t0 = time.perf_counter()
         i += 1
         node = q.get()
         explored.append(node.state)
@@ -33,9 +34,7 @@ def breadth_first_search(initial_state, thread_number=1):
             if child.state not in explored:
                 q_temp.put(child)
 
-        # t1 = np.datetime64()
-
-        t1 = time.clock()
+        t1 = time.perf_counter()
         diff = t1 - t0
         threads_list_times.append(diff)
 
