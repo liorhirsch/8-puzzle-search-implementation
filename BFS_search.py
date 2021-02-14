@@ -33,7 +33,6 @@ def breadth_first_search(initial_state, thread_number=1):
         for child in children:
             if child.state not in explored:
                 q_temp.put(child)
-
         t1 = time.perf_counter()
         diff = t1 - t0
         threads_list_times.append(diff)

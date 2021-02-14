@@ -19,21 +19,32 @@ puzzle_8_boards = [[1, 3, 4,
                     0, 7, 5]]
 
 puzzle_15_boards = [
-    # 11 steps
-    [1,0,2,4,
-     9,5,3,8,
-     10,7,6,12,
-     13,14,11,15],
-    # 12 steps
-    [5,1,2,4,
-     9,7,3,8,
-     6,14,10,12,
-     13,0,11,15],
-    # 13 steps
-    [1,3,7,0,
-     6,2,8,4,
-     5,14,10,12,
-     9,13,11,15]]
+    # 43 steps
+    [10,7,11,2,
+     3,9,4,8,
+     1,12,15,14,
+     6,5,0,13],
+    # 47 steps
+    [12,13,9,5,
+     1,6,7,4,
+     14,15,2,3,
+     0,10,11,8]
+    ]
+    # # 11 steps
+    # [1,0,2,4,
+    #  9,5,3,8,
+    #  10,7,6,12,
+    #  13,14,11,15],
+    # # 12 steps
+    # [5,1,2,4,
+    #  9,7,3,8,
+    #  6,14,10,12,
+    #  13,0,11,15],
+    # # 13 steps
+    # [1,3,7,0,
+    #  6,2,8,4,
+    #  5,14,10,12,
+    #  9,13,11,15]]
     # # 14 steps
     # [1, 7, 2, 3,
     #  9, 5, 8, 4,
@@ -52,11 +63,14 @@ puzzle_15_boards = [
 
 
 def main():
-    configurations = [("BFS", breadth_first_search),
-                      ("A_star", Astar_search)]
+    configurations = [
+        ("BFS", breadth_first_search),
+                      ("A_star", Astar_search)
+    ]
 
     puzzle_8_data = []
     puzzle_15_data = []
+    columns = ['Algorithm', 'board_index', 'K', 'generated_nodes', 'average_time', 'std', 'total_steps', 'sol_len']
 
     run_8_puzzle(0, configurations[0][1], configurations[0][0], 1, [])
 
@@ -66,24 +80,26 @@ def main():
         # for board_index in [1]:
             print(f'================================{str(board_index)}================================')
             for k in range(1,51):
-                # run_8_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_8_data)
-                run_15_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_15_data)
+                run_8_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_8_data)
+                # run_15_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_15_data)
+            puzzle_8_df = pd.DataFrame(puzzle_8_data, columns=columns)
+            puzzle_8_df.to_csv("puzzle_8_results_std_a_star.csv")
 
-    columns = ['Algorithm', 'board_index', 'K', 'generated_nodes', 'average_time', 'total_steps', 'sol_len']
+    columns = ['Algorithm', 'board_index', 'K', 'generated_nodes', 'average_time', 'std', 'total_steps', 'sol_len']
 
-    # puzzle_8_df = pd.DataFrame(puzzle_8_data, columns=columns)
-    # puzzle_8_df.to_csv("puzzle_8_results.csv")
+    puzzle_8_df = pd.DataFrame(puzzle_8_data, columns=columns)
+    puzzle_8_df.to_csv("puzzle_8_results_std_a_star.csv")
     #
-    puzzle_15_df = pd.DataFrame(puzzle_15_data, columns=columns)
-    puzzle_15_df.to_csv("puzzle_15_results2.csv")
+    # puzzle_15_df = pd.DataFrame(puzzle_15_data, columns=columns)
+    # puzzle_15_df.to_csv("puzzle_15_results_only_a*_larger_depth.csv")
 
 
 
-def run_8_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_8_data, num_iters=100):
+def run_8_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_8_data, num_iters=1000):
     run_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_8_data, Puzzle8, puzzle_8_boards, num_iters)
 
 
-def run_15_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_15_data, num_iters=100):
+def run_15_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_15_data, num_iters=1000):
     run_puzzle(board_index, curr_conf_func, curr_conf_name, k, puzzle_15_data, Puzzle15, puzzle_15_boards, num_iters)
 
 
@@ -99,7 +115,7 @@ def run_puzzle(board_index, curr_conf_func, curr_conf_name, k, all_puzzle_data, 
     print(
         f"K = {k} | space : {type(init_puzzle).num_of_instances} | total time : {np.average(all_times)} | std time : {np.std(all_times)} | total steps : {total_steps}")
     all_puzzle_data.append(
-        [curr_conf_name, board_index, k, type(init_puzzle).num_of_instances + 1, np.average(all_times), total_steps, len(solution)])
+        [curr_conf_name, board_index, k, type(init_puzzle).num_of_instances + 1, np.average(all_times), np.std(all_times), total_steps, len(solution)])
 #     TODO - add column of solution_len
 
 
